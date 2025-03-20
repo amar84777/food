@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: food
+  namespace: qa
+  labels:
+    app: food
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: food
+  template:
+    metadata:
+      labels:
+        app: food
+    spec:
+      containers:
+      - name: food
+        image: amardeep245/food:qa
+        ports:
+        - containerPort: 80
+
+
+# Apply dev ns 
+#kubectl apply -f ecomm-qa-deploy.yml
+#kubectl get pod -n qa
+
+
+
+# Build ecomm-qa-svc.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: food1-svc
+  namespace: qa
+spec:
+  type: NodePort
+  selector:
+    app: food
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30009
+
+
