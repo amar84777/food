@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: login-2501-be
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: login-2501-be
+  template:
+    metadata:
+      labels:
+        app: login-2501-be
+    spec:
+      containers:
+        - name: backend-container
+          image: amardeep245/login-2501-be
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: backend-config-map
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: password
+
